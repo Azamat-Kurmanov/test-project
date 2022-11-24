@@ -50,6 +50,7 @@ public class ArticleService {
      */
     public Boolean deleteArticleById(Long id) {
         articleRepository.deleteById(id);
+        if (getArticleById(id)!=null) return false;
         return true;
     }
 
@@ -70,6 +71,13 @@ public class ArticleService {
         return findByPublication_date;
     }
 
+    /**
+     * Extracts the number of articles for the particular date
+     * @param day
+     * @param month
+     * @param year
+     * @return
+     */
     public Integer numberOfArticleForOneDate(Integer day, Integer month, Integer year) {
         if (day!=null & month!=null & year!=null) {
             LocalDateTime localDateTime1 = LocalDateTime.of(year, month, day, 0, 0, 0);

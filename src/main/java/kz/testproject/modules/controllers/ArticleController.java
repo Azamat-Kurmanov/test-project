@@ -1,9 +1,8 @@
 package kz.testproject.modules.controllers;
 
-import kz.testproject.modules.dto.data.Statistics;
-import kz.testproject.modules.dto.data.User;
-import kz.testproject.modules.services.ArticleService;
 import kz.testproject.modules.dto.ArticleEntity;
+import kz.testproject.modules.dto.data.Statistics;
+import kz.testproject.modules.services.ArticleService;
 import kz.testproject.modules.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +58,6 @@ public class ArticleController {
             @PathVariable int month,
             @PathVariable int year
     ) {
-        return userService.getListOfStatistics(userId, day, month, year);
+        return userService.getStatisticsData(userId, day, month, year);
     }
 }
