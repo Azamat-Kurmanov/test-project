@@ -5,11 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -23,16 +27,16 @@ public class ArticleEntity {
     @GeneratedValue
     private Long id;
 
-    @NotNull(message = "The title cannot be null")
-    @Max(value = 100, message = "The should not be greater than 100 symbols")
+    @NotBlank(message = "The title cannot be null")
+    @Length(min = 5, max = 100, message = "The length of title cannot be less than 5 and greater than 100 symbols")
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull(message = "The author cannot be null")
+    @NotBlank(message = "The name of author has to be filled")
     @Column(name = "author", nullable = false)
     private String author;
 
-    @NotNull(message = "The content cannot be null")
+    @NotBlank(message = "The content cannot be null")
     @Column(name = "content", nullable = false)
     private String content;
 
