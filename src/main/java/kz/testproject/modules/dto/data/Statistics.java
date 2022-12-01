@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Statistics {
+    private Long id;
     private LocalDate datePublished;
     private Integer counter;
 }

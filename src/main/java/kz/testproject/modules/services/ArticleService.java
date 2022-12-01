@@ -86,4 +86,8 @@ public class ArticleService {
         }
         return 0;
     }
+
+    public LocalDateTime getArticleByMaxDate(){
+        return articleRepository.getArticleByMaxDate();
+    }
 }

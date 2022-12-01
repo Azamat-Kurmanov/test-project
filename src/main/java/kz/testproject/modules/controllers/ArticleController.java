@@ -51,13 +51,10 @@ public class ArticleController {
         return articleService.getListOfArticlesByDate(day, month, year);
     }
 
-    @GetMapping("/statistics/{userId}/{day}/{month}/{year}")
-    public Statistics getStatistic(
-            @PathVariable Long userId,
-            @PathVariable int day,
-            @PathVariable int month,
-            @PathVariable int year
+    @GetMapping("/statistics/{userId}")
+    public List<Statistics> getStatistic(
+            @PathVariable Long userId
     ) {
-        return userService.getStatisticsData(userId, day, month, year);
+        return userService.getStatisticsData(userId);
     }
 }

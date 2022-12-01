@@ -2,18 +2,21 @@ package kz.testproject.modules.services;
 
 import kz.testproject.modules.dto.data.Statistics;
 import kz.testproject.modules.dto.data.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserService {
 
     private static final List<User> userList = new ArrayList<>();
     private static final String ADMIN = "admin";
-
+    private static final Long MAX_NUMBER_OF_DAYS = 7L;
     private ArticleService articleService;
 
     @Autowired
@@ -36,21 +39,31 @@ public class UserService {
     }
 
     /**
-     * User verification and articles extraction by particular date
+     * User verification and extraction of the number of articles by a particular date within 7 days
      * @param userId
-     * @param day
-     * @param month
-     * @param year
      * @return
      */
-    public Statistics getStatisticsData(Long userId, Integer day, Integer month, Integer year) {
-        Statistics statistics = null;
+    public List<Statistics> getStatisticsData(Long userId) {
+        List<Statistics> statistics = new ArrayList<>();
         User user = getUserById(userId);
         if (user!=null && user.getRole()==ADMIN){
-            statistics = new Statistics(
-                LocalDate.of(year, month, day),
-                articleService.numberOfArticleForOneDate(day, month, year)
-            );
+
+            LocalDateTime articlePublDateInit = LocalDateTime.now().minusDays(MAX_NUMBER_OF_DAYS); //----Initial date for the displaying
+            LocalDateTime articleByMaxDate = articleService.getArticleByMaxDate(); //----The latest article published date
+
+            if (articleByMaxDate!=null){
+                Long counter = 1L;
+                while(counter<=MAX_NUMBER_OF_DAYS){
+                    LocalDateTime dateTime = articlePublDateInit.plusDays(counter);
+                    statistics.add(new Statistics(
+                            counter,
+                            LocalDate.of(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()),
+                            articleService.numberOfArticleForOneDate(dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear())
+                    ));
+                    counter ++;
+                }
+
+            }
         }
         return statistics;
     }
